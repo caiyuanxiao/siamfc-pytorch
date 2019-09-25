@@ -7,7 +7,7 @@ import numpy as np
 
 def init_weights(model, gain=1):
     for m in model.modules():
-        if isinstance(m, nn.Conv2d):
+        if isinstance(m, nn.Conv2d):   #isinstance(a,b),如果a和b类型一样，则返回true，否则返回false
             nn.init.xavier_uniform_(m.weight, gain)
             if m.bias is not None:
                 nn.init.constant_(m.bias, 0)

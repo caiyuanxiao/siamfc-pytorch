@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division
+from __future__ import absolute_import, division   #在python中导入未来的支持的语言特征中division(精确除法)，导入后/变成精确除法
 
 import torch.nn as nn
 import cv2

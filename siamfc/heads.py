@@ -23,6 +23,6 @@ class SiamFC(nn.Module):
         nz = z.size(0)
         nx, c, h, w = x.size()
         x = x.view(-1, nz * c, h, w)
-        out = F.conv2d(x, z, groups=nz)     #卷积操作，输入为x，卷积核为z，步长为nz
+        out = F.conv2d(x, z, groups=nz)     #卷积操作，输入为x，卷积核为z，group=2表示把输入分为两组做卷积
         out = out.view(nx, -1, out.size(-2), out.size(-1))
         return out

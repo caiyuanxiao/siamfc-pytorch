@@ -25,7 +25,10 @@ class _AlexNet(nn.Module):
 
 
 class AlexNetV1(_AlexNet):
-    output_stride = 8
+    output_stride = 8         #input stride为我们正常进行卷积时候设置的stride值，
+                              #output stride为该矩阵经过多次卷积pooling操作后，尺寸缩小的值，例如：
+                              #input image为224 * 224，经过多次卷积pooling操作后，feature map为7*7，那么output stride为224/7 = 32
+
 
     def __init__(self):
         super(AlexNetV1, self).__init__()

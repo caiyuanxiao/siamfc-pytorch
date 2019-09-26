@@ -8,10 +8,10 @@ import torch
 from . import ops
 
 
-__all__ = ['SiamFCTransforms']
+__all__ = ['SiamFCTransforms']  #只公开括号里面的模块
 
 
-class Compose(object):
+class Compose(object):  
 
     def __init__(self, transforms):
         self.transforms = transforms
@@ -33,13 +33,13 @@ class RandomStretch(object):
             cv2.INTER_CUBIC,
             cv2.INTER_AREA,
             cv2.INTER_NEAREST,
-            cv2.INTER_LANCZOS4])
+            cv2.INTER_LANCZOS4])   #定义插值
         scale = 1.0 + np.random.uniform(
-            -self.max_stretch, self.max_stretch)
+            -self.max_stretch, self.max_stretch)  #np.random.uniform（a,b）表示从一个均匀分布[a,b)中随机采样
         out_size = (
-            round(img.shape[1] * scale),
+            round(img.shape[1] * scale), #img.shape[1]读取image第一列的长度
             round(img.shape[0] * scale))
-        return cv2.resize(img, out_size, interpolation=interp)
+        return cv2.resize(img, out_size, interpolation=interp)  #使用resize缩放图像，输入为image，输出尺寸outsize，使用插值
 
 
 class CenterCrop(object):
@@ -51,7 +51,7 @@ class CenterCrop(object):
             self.size = size
     
     def __call__(self, img):
-        h, w = img.shape[:2]
+        h, w = img.shape[:2]    #image的行数与列数
         tw, th = self.size
         i = round((h - th) / 2.)
         j = round((w - tw) / 2.)

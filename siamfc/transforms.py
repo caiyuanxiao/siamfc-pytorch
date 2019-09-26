@@ -61,7 +61,7 @@ class CenterCrop(object):
             avg_color = np.mean(img, axis=(0, 1))
             img = cv2.copyMakeBorder(
                 img, npad, npad, npad, npad,
-                cv2.BORDER_CONSTANT, value=avg_color)
+                cv2.BORDER_CONSTANT, value=avg_color)   #对image进行填充
             i += npad
             j += npad
 
@@ -71,7 +71,7 @@ class CenterCrop(object):
 class RandomCrop(object):
 
     def __init__(self, size):
-        if isinstance(size, numbers.Number):
+        if isinstance(size, numbers.Number):   #判断size和number是否同一类型
             self.size = (int(size), int(size))
         else:
             self.size = size
@@ -87,10 +87,10 @@ class RandomCrop(object):
 class ToTensor(object):
 
     def __call__(self, img):
-        return torch.from_numpy(img).float().permute((2, 0, 1))
+        return torch.from_numpy(img).float().permute((2, 0, 1)) ##.permute()将tensor的维度换位。
 
 
-class SiamFCTransforms(object):
+class SiamFCTransforms(object): 
 
     def __init__(self, exemplar_sz=127, instance_sz=255, context=0.5):
         self.exemplar_sz = exemplar_sz
@@ -102,22 +102,22 @@ class SiamFCTransforms(object):
             CenterCrop(instance_sz - 8),
             RandomCrop(instance_sz - 2 * 8),
             CenterCrop(exemplar_sz),
-            ToTensor()])
-        self.transforms_x = Compose([
+            ToTensor()])              #对模板进行转换
+        self.transforms_x = Compose([     
             RandomStretch(),
             CenterCrop(instance_sz - 8),
             RandomCrop(instance_sz - 2 * 8),
-            ToTensor()])
+            ToTensor()])             #对样本进行转换
     
     def __call__(self, z, x, box_z, box_x):
         z = self._crop(z, box_z, self.instance_sz)
         x = self._crop(x, box_x, self.instance_sz)
         z = self.transforms_z(z)
         x = self.transforms_x(x)
-        return z, x
+        return z, x              #裁剪后进行转换，得到训练图像对
     
-    def _crop(self, img, box, out_size):
-        # convert box to 0-indexed and center based [y, x, h, w]
+    def _crop(self, img, box, out_size):  #定义裁剪函数
+        # convert box to 0-indexed and center b ased [y, x, h, w]
         box = np.array([
             box[1] - 1 + (box[3] - 1) / 2,
             box[0] - 1 + (box[2] - 1) / 2,
